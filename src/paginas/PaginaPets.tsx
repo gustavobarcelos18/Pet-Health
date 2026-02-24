@@ -1,34 +1,71 @@
 // Desenvolvido por Gustavo - PetHealth Lite - RPV 2026
-import React, { useState } from "react";
+
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const esquemaFormulario = z.object({
+  nome: z.string().min(1, "Informe o nome do pet"),
+  especie: z.string().min(1, "Informe a espécie"),
+  raca: z.string().optional(),
+  tutor: z.string().min(1, "Informe o nome do tutor"),
+});
+
+type DadosFormulario = z.infer<typeof esquemaFormulario>;
 
 export default function PaginaPets() {
-  const [nome, setNome] = useState("");
-  const [especie, setEspecie] = useState("");
-  const [raca, setRaca] = useState("");
-  const [tutor, setTutor] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<DadosFormulario>({
+    resolver: zodResolver(esquemaFormulario),
+    defaultValues: {
+      nome: "",
+      especie: "",
+      raca: "",
+      tutor: "",
+    },
+  });
 
-  function cadastrar(evento: React.FormEvent) {
-    evento.preventDefault();
-    console.log("Cadastro (ainda sem salvar):", nome, especie, raca, tutor);
-    alert("Cadastro enviado (Sprint 1 ainda não salva).");
+  function cadastrar(dados: DadosFormulario) {
+    console.log("Cadastro validado (ainda sem salvar):", dados);
+    alert("Cadastro validado com sucesso!");
+    reset();
   }
 
   return (
     <div className="caixa">
       <h2>Cadastro de Pacientes</h2>
 
-      <form onSubmit={cadastrar}>
+      <form onSubmit={handleSubmit(cadastrar)}>
         <label>Nome do Pet</label>
-        <input value={nome} onChange={(e) => setNome(e.target.value)} />
+        <input {...register("nome")} />
+        {errors.nome && (
+          <div style={{ color: "red", marginTop: "-8px", marginBottom: "10px" }}>
+            {errors.nome.message}
+          </div>
+        )}
 
         <label>Espécie</label>
-        <input value={especie} onChange={(e) => setEspecie(e.target.value)} />
+        <input {...register("especie")} />
+        {errors.especie && (
+          <div style={{ color: "red", marginTop: "-8px", marginBottom: "10px" }}>
+            {errors.especie.message}
+          </div>
+        )}
 
         <label>Raça</label>
-        <input value={raca} onChange={(e) => setRaca(e.target.value)} />
+        <input {...register("raca")} />
 
         <label>Nome do Tutor</label>
-        <input value={tutor} onChange={(e) => setTutor(e.target.value)} />
+        <input {...register("tutor")} />
+        {errors.tutor && (
+          <div style={{ color: "red", marginTop: "-8px", marginBottom: "10px" }}>
+            {errors.tutor.message}
+          </div>
+        )}
 
         <button type="submit">Cadastrar</button>
       </form>
