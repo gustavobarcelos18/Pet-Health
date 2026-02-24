@@ -1,0 +1,60 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f6f7f9;
+}
+
+.conteudo {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.caixa {
+  background: white;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-top: 6px;
+  margin-bottom: 12px;
+}
+
+button {
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: #0b8f6a;
+  color: white;
+  cursor: pointer;
+}
+
+.topo {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.topo-miolo {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.links {
+  display: flex;
+  gap: 12px;
+}
+
+a {
+  text-decoration: none;
+  color: #111827;
+}
