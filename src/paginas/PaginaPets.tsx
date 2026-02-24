@@ -21,17 +21,33 @@ export default function PaginaPets() {
     reset,
   } = useForm<DadosFormulario>({
     resolver: zodResolver(esquemaFormulario),
-    defaultValues: {
-      nome: "",
-      especie: "",
-      raca: "",
-      tutor: "",
-    },
   });
 
   function cadastrar(dados: DadosFormulario) {
-    console.log("Cadastro validado (ainda sem salvar):", dados);
-    alert("Cadastro validado com sucesso!");
+    // Pega lista atual do localStorage
+    const listaSalva = localStorage.getItem("pets");
+
+    let listaPets = [];
+
+    if (listaSalva) {
+      listaPets = JSON.parse(listaSalva);
+    }
+
+    // Cria novo objeto pet
+    const novoPet = {
+      id: Date.now(),
+      nome: dados.nome,
+      especie: dados.especie,
+      raca: dados.raca,
+      tutor: dados.tutor,
+    };
+
+    listaPets.push(novoPet);
+
+    // Salva novamente no localStorage
+    localStorage.setItem("pets", JSON.stringify(listaPets));
+
+    alert("Pet cadastrado e salvo com sucesso!");
     reset();
   }
 
@@ -43,17 +59,13 @@ export default function PaginaPets() {
         <label>Nome do Pet</label>
         <input {...register("nome")} />
         {errors.nome && (
-          <div style={{ color: "red", marginTop: "-8px", marginBottom: "10px" }}>
-            {errors.nome.message}
-          </div>
+          <div style={{ color: "red" }}>{errors.nome.message}</div>
         )}
 
         <label>Espécie</label>
         <input {...register("especie")} />
         {errors.especie && (
-          <div style={{ color: "red", marginTop: "-8px", marginBottom: "10px" }}>
-            {errors.especie.message}
-          </div>
+          <div style={{ color: "red" }}>{errors.especie.message}</div>
         )}
 
         <label>Raça</label>
@@ -62,9 +74,7 @@ export default function PaginaPets() {
         <label>Nome do Tutor</label>
         <input {...register("tutor")} />
         {errors.tutor && (
-          <div style={{ color: "red", marginTop: "-8px", marginBottom: "10px" }}>
-            {errors.tutor.message}
-          </div>
+          <div style={{ color: "red" }}>{errors.tutor.message}</div>
         )}
 
         <button type="submit">Cadastrar</button>
