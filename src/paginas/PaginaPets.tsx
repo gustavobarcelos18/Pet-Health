@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
 
 const esquemaFormulario = z.object({
   nome: z.string().min(1, "Informe o nome do pet"),
@@ -14,6 +15,8 @@ const esquemaFormulario = z.object({
 type DadosFormulario = z.infer<typeof esquemaFormulario>;
 
 export default function PaginaPets() {
+  const [listaPets, setListaPets] = useState<any[]>([]);
+
   const {
     register,
     handleSubmit,
@@ -23,17 +26,16 @@ export default function PaginaPets() {
     resolver: zodResolver(esquemaFormulario),
   });
 
-  function cadastrar(dados: DadosFormulario) {
-    // Pega lista atual do localStorage
-    const listaSalva = localStorage.getItem("pets");
+  // Carrega pets do localStorage quando a página abre
+  useEffect(() => {
+    const dadosSalvos = localStorage.getItem("pets");
 
-    let listaPets = [];
-
-    if (listaSalva) {
-      listaPets = JSON.parse(listaSalva);
+    if (dadosSalvos) {
+      setListaPets(JSON.parse(dadosSalvos));
     }
+  }, []);
 
-    // Cria novo objeto pet
+  function cadastrar(dados: DadosFormulario) {
     const novoPet = {
       id: Date.now(),
       nome: dados.nome,
@@ -42,10 +44,10 @@ export default function PaginaPets() {
       tutor: dados.tutor,
     };
 
-    listaPets.push(novoPet);
+    const novaLista = [...listaPets, novoPet];
 
-    // Salva novamente no localStorage
-    localStorage.setItem("pets", JSON.stringify(listaPets));
+    localStorage.setItem("pets", JSON.stringify(novaLista));
+    setListaPets(novaLista);
 
     alert("Pet cadastrado e salvo com sucesso!");
     reset();
@@ -79,6 +81,18 @@ export default function PaginaPets() {
 
         <button type="submit">Cadastrar</button>
       </form>
+
+      <hr style={{ margin: "20px 0" }} />
+
+      <h3>Pets já cadastrados</h3>
+
+      {listaPets.length === 0 && <p>Nenhum pet cadastrado.</p>}
+
+      {listaPets.map((pet) => (
+        <div key={pet.id} style={{ marginBottom: "8px" }}>
+          <strong>{pet.nome}</strong> - {pet.especie} - Tutor: {pet.tutor}
+        </div>
+      ))}
     </div>
   );
 }
