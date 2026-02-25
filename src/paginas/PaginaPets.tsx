@@ -16,6 +16,7 @@ type DadosFormulario = z.infer<typeof esquemaFormulario>;
 
 export default function PaginaPets() {
   const [listaPets, setListaPets] = useState<any[]>([]);
+  const [mensagem, setMensagem] = useState("");
 
   const {
     register,
@@ -26,7 +27,6 @@ export default function PaginaPets() {
     resolver: zodResolver(esquemaFormulario),
   });
 
-  // Carrega pets do localStorage quando a página abre
   useEffect(() => {
     const dadosSalvos = localStorage.getItem("pets");
 
@@ -49,13 +49,33 @@ export default function PaginaPets() {
     localStorage.setItem("pets", JSON.stringify(novaLista));
     setListaPets(novaLista);
 
-    alert("Pet cadastrado e salvo com sucesso!");
+    setMensagem("Pet cadastrado com sucesso!");
     reset();
+
+    setTimeout(() => {
+      setMensagem("");
+    }, 2500);
   }
 
   return (
     <div className="caixa">
       <h2>Cadastro de Pacientes</h2>
+
+      {mensagem !== "" && (
+        <div
+          style={{
+            background: "#e8f6f1",
+            border: "1px solid #0b8f6a",
+            padding: "10px",
+            borderRadius: "8px",
+            marginBottom: "14px",
+            color: "#0b8f6a",
+            fontWeight: 700,
+          }}
+        >
+          {mensagem}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit(cadastrar)}>
         <label>Nome do Pet</label>
