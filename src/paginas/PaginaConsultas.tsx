@@ -23,6 +23,7 @@ export default function PaginaConsultas() {
   };
 
   const [listaPets, setListaPets] = useState<any[]>([]);
+  const [mensagem, setMensagem] = useState("");
 
   useEffect(() => {
     const dados = localStorage.getItem("pets");
@@ -35,6 +36,7 @@ export default function PaginaConsultas() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<DadosConsulta>({
     resolver: zodResolver(esquemaConsulta),
   });
@@ -49,8 +51,25 @@ export default function PaginaConsultas() {
       medico: medicoFixo,
     };
 
-    console.log("Consulta validada:", consulta);
-    alert("Consulta validada com sucesso (ainda não salva).");
+    const consultasSalvas = localStorage.getItem("consultas");
+    let listaConsultas: any[] = [];
+
+    if (consultasSalvas) {
+      listaConsultas = JSON.parse(consultasSalvas);
+    }
+
+    listaConsultas.push(consulta);
+
+    localStorage.setItem("consultas", JSON.stringify(listaConsultas));
+
+    console.log("Consulta salva:", consulta);
+
+    setMensagem("Consulta salva com sucesso!");
+    reset();
+
+    setTimeout(() => {
+      setMensagem("");
+    }, 2500);
   }
 
   return (
@@ -71,6 +90,22 @@ export default function PaginaConsultas() {
 
       <div className="caixa">
         <h2>Agendar Consulta</h2>
+
+        {mensagem !== "" && (
+          <div
+            style={{
+              background: "#e8f6f1",
+              border: "1px solid #0b8f6a",
+              padding: "10px",
+              borderRadius: "8px",
+              marginBottom: "14px",
+              color: "#0b8f6a",
+              fontWeight: 700,
+            }}
+          >
+            {mensagem}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit(agendar)}>
           <label>Selecione o Pet</label>
