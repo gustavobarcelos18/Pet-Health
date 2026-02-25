@@ -58,3 +58,8 @@ a {
   text-decoration: none;
   color: #111827;
 }
+@media (max-width: 900px) {
+  .conteudo {
+    padding: 16px;
+  }
+}

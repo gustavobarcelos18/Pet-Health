@@ -33,7 +33,7 @@ export default function BarraTopo() {
         }}
       >
         <div style={{ fontWeight: 700, color: "#0b8f6a" }}>
-          🐾 PetHealth Lite
+           PetHealth Lite
         </div>
 
         <div style={{ display: "flex", gap: "10px" }}>
