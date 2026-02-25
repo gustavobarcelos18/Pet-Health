@@ -1,19 +1,28 @@
 // Desenvolvido por Gustavo - PetHealth Lite - RPV 2026
 
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const esquemaConsulta = z.object({
+  petId: z.string().min(1, "Selecione um pet"),
+  data: z.string().min(1, "Informe a data"),
+  horario: z.string().min(1, "Informe o horário"),
+  motivo: z.string().min(1, "Informe o motivo"),
+});
+
+type DadosConsulta = z.infer<typeof esquemaConsulta>;
 
 export default function PaginaConsultas() {
   const medicoFixo = {
     nome: "Dr. Gustavo Barcelos",
     crmv: "12345",
-    especialidade: "Clínica Geral Veterinária RPV Desenvolvimento de sistemas - 2026",
+    especialidade:
+      "Clínica Geral Veterinária RPV Desenvolvimento de sistemas - 2026",
   };
 
   const [listaPets, setListaPets] = useState<any[]>([]);
-  const [petSelecionado, setPetSelecionado] = useState("");
-  const [data, setData] = useState("");
-  const [horario, setHorario] = useState("");
-  const [motivo, setMotivo] = useState("");
 
   useEffect(() => {
     const dados = localStorage.getItem("pets");
@@ -22,25 +31,26 @@ export default function PaginaConsultas() {
     }
   }, []);
 
-  function agendar(evento: React.FormEvent) {
-    evento.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<DadosConsulta>({
+    resolver: zodResolver(esquemaConsulta),
+  });
 
-    if (petSelecionado === "") {
-      alert("Selecione um pet para agendar a consulta.");
-      return;
-    }
-
+  function agendar(dados: DadosConsulta) {
     const consulta = {
       id: Date.now(),
-      petId: petSelecionado,
-      data: data,
-      horario: horario,
-      motivo: motivo,
+      petId: dados.petId,
+      data: dados.data,
+      horario: dados.horario,
+      motivo: dados.motivo,
       medico: medicoFixo,
     };
 
-    console.log("Consulta criada:", consulta);
-    alert("Consulta criada e associada ao pet (ainda não salva).");
+    console.log("Consulta validada:", consulta);
+    alert("Consulta validada com sucesso (ainda não salva).");
   }
 
   return (
@@ -62,11 +72,10 @@ export default function PaginaConsultas() {
       <div className="caixa">
         <h2>Agendar Consulta</h2>
 
-        <form onSubmit={agendar}>
+        <form onSubmit={handleSubmit(agendar)}>
           <label>Selecione o Pet</label>
           <select
-            value={petSelecionado}
-            onChange={(e) => setPetSelecionado(e.target.value)}
+            {...register("petId")}
             style={{
               width: "100%",
               padding: "10px",
@@ -83,23 +92,27 @@ export default function PaginaConsultas() {
               </option>
             ))}
           </select>
+          {errors.petId && (
+            <div style={{ color: "red" }}>{errors.petId.message}</div>
+          )}
 
           <label>Data</label>
-          <input
-            type="date"
-            value={data}
-            onChange={(e) => setData(e.target.value)}
-          />
+          <input type="date" {...register("data")} />
+          {errors.data && (
+            <div style={{ color: "red" }}>{errors.data.message}</div>
+          )}
 
           <label>Horário</label>
-          <input
-            type="time"
-            value={horario}
-            onChange={(e) => setHorario(e.target.value)}
-          />
+          <input type="time" {...register("horario")} />
+          {errors.horario && (
+            <div style={{ color: "red" }}>{errors.horario.message}</div>
+          )}
 
           <label>Motivo</label>
-          <input value={motivo} onChange={(e) => setMotivo(e.target.value)} />
+          <input {...register("motivo")} />
+          {errors.motivo && (
+            <div style={{ color: "red" }}>{errors.motivo.message}</div>
+          )}
 
           <button type="submit">Agendar</button>
         </form>
