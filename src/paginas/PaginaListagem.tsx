@@ -1,10 +1,10 @@
 // Desenvolvido por Gustavo - PetHealth Lite - RPV 2026
 
 import { useEffect, useState } from "react";
+import TabelaSimples from "../componentes/TabelaSimples";
 
 export default function PaginaListagem() {
   const [listaPets, setListaPets] = useState<any[]>([]);
-  const [petSelecionado, setPetSelecionado] = useState<any>(null);
 
   useEffect(() => {
     const dados = localStorage.getItem("pets");
@@ -15,11 +15,16 @@ export default function PaginaListagem() {
   }, []);
 
   function verDetalhes(pet: any) {
-    setPetSelecionado(pet);
-  }
-
-  function fecharDetalhes() {
-    setPetSelecionado(null);
+    alert(
+      "Nome: " +
+        pet.nome +
+        "\nEspécie: " +
+        pet.especie +
+        "\nRaça: " +
+        (pet.raca || "") +
+        "\nTutor: " +
+        pet.tutor
+    );
   }
 
   return (
@@ -29,7 +34,7 @@ export default function PaginaListagem() {
       {listaPets.length === 0 && <p>Nenhum pet cadastrado.</p>}
 
       {listaPets.length > 0 && (
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <TabelaSimples>
           <thead>
             <tr>
               <th
@@ -41,6 +46,7 @@ export default function PaginaListagem() {
               >
                 Nome
               </th>
+
               <th
                 style={{
                   textAlign: "left",
@@ -50,6 +56,7 @@ export default function PaginaListagem() {
               >
                 Espécie
               </th>
+
               <th
                 style={{
                   textAlign: "left",
@@ -59,6 +66,7 @@ export default function PaginaListagem() {
               >
                 Tutor
               </th>
+
               <th
                 style={{
                   textAlign: "right",
@@ -82,6 +90,7 @@ export default function PaginaListagem() {
                 >
                   {pet.nome}
                 </td>
+
                 <td
                   style={{
                     padding: "10px",
@@ -90,6 +99,7 @@ export default function PaginaListagem() {
                 >
                   {pet.especie}
                 </td>
+
                 <td
                   style={{
                     padding: "10px",
@@ -98,6 +108,7 @@ export default function PaginaListagem() {
                 >
                   {pet.tutor}
                 </td>
+
                 <td
                   style={{
                     padding: "10px",
@@ -123,44 +134,7 @@ export default function PaginaListagem() {
               </tr>
             ))}
           </tbody>
-        </table>
-      )}
-
-      {petSelecionado && (
-        <div
-          style={{
-            marginTop: "18px",
-            padding: "14px",
-            borderRadius: "10px",
-            border: "1px solid #e5e7eb",
-            background: "#fafafa",
-          }}
-        >
-          <div style={{ fontWeight: 700, marginBottom: "6px" }}>
-            Detalhes do Pet
-          </div>
-
-          <div>Nome: {petSelecionado.nome}</div>
-          <div>Espécie: {petSelecionado.especie}</div>
-          <div>Raça: {petSelecionado.raca || ""}</div>
-          <div>Tutor: {petSelecionado.tutor}</div>
-
-          <button
-            type="button"
-            onClick={fecharDetalhes}
-            style={{
-              marginTop: "12px",
-              background: "#0b8f6a",
-              color: "white",
-              border: 0,
-              padding: "8px 12px",
-              borderRadius: "8px",
-              cursor: "pointer",
-            }}
-          >
-            Fechar
-          </button>
-        </div>
+        </TabelaSimples>
       )}
     </div>
   );

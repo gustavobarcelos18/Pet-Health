@@ -1,5 +1,6 @@
 // Desenvolvido por Gustavo - PetHealth Lite - RPV 2026
 
+import Cartao from "../componentes/Cartao";
 import { Link } from "react-router-dom";
 
 export default function PaginaHome() {
@@ -23,57 +24,33 @@ export default function PaginaHome() {
         }}
       >
         <Link to="/pacientes" style={{ textDecoration: "none", color: "#111827" }}>
-          <div
-            style={{
-              background: "white",
-              border: "1px solid #e5e7eb",
-              borderRadius: "12px",
-              padding: "20px",
-              boxShadow: "0 8px 20px rgba(0,0,0,0.06)",
-            }}
-          >
+          <Cartao>
             <div style={{ fontSize: "28px" }}></div>
             <h3 style={{ marginBottom: "6px" }}>Cadastrar Pet</h3>
             <p style={{ color: "#6b7280", marginTop: "0" }}>
               Registre novos pets e seus tutores no sistema.
             </p>
-          </div>
+          </Cartao>
         </Link>
 
         <Link to="/consultas" style={{ textDecoration: "none", color: "#111827" }}>
-          <div
-            style={{
-              background: "white",
-              border: "1px solid #e5e7eb",
-              borderRadius: "12px",
-              padding: "20px",
-              boxShadow: "0 8px 20px rgba(0,0,0,0.06)",
-            }}
-          >
+          <Cartao>
             <div style={{ fontSize: "28px" }}></div>
             <h3 style={{ marginBottom: "6px" }}>Agendar Consulta</h3>
             <p style={{ color: "#6b7280", marginTop: "0" }}>
               Marque consultas veterinárias para seus pacientes.
             </p>
-          </div>
+          </Cartao>
         </Link>
 
         <Link to="/listagem" style={{ textDecoration: "none", color: "#111827" }}>
-          <div
-            style={{
-              background: "white",
-              border: "1px solid #e5e7eb",
-              borderRadius: "12px",
-              padding: "20px",
-              boxShadow: "0 8px 20px rgba(0,0,0,0.06)",
-            }}
-          >
+          <Cartao>
             <div style={{ fontSize: "28px" }}></div>
             <h3 style={{ marginBottom: "6px" }}>Ver Pacientes</h3>
             <p style={{ color: "#6b7280", marginTop: "0" }}>
               Visualize todos os pacientes cadastrados.
             </p>
-          </div>
+          </Cartao>
         </Link>
       </div>
 
