@@ -1,4 +1,5 @@
 // Desenvolvido por Gustavo - PetHealth Lite - RPV 2026
+
 export default function PaginaListagem() {
   return (
     <div className="caixa">

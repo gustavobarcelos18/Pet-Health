@@ -1,6 +1,6 @@
 // Desenvolvido por Gustavo - PetHealth Lite - RPV 2026
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function PaginaConsultas() {
   const medicoFixo = {
@@ -16,16 +16,31 @@ export default function PaginaConsultas() {
   const [motivo, setMotivo] = useState("");
 
   useEffect(() => {
-    const dadosSalvos = localStorage.getItem("pets");
-
-    if (dadosSalvos) {
-      setListaPets(JSON.parse(dadosSalvos));
+    const dados = localStorage.getItem("pets");
+    if (dados) {
+      setListaPets(JSON.parse(dados));
     }
   }, []);
 
   function agendar(evento: React.FormEvent) {
     evento.preventDefault();
-    alert("Consulta enviada (ainda não salva).");
+
+    if (petSelecionado === "") {
+      alert("Selecione um pet para agendar a consulta.");
+      return;
+    }
+
+    const consulta = {
+      id: Date.now(),
+      petId: petSelecionado,
+      data: data,
+      horario: horario,
+      motivo: motivo,
+      medico: medicoFixo,
+    };
+
+    console.log("Consulta criada:", consulta);
+    alert("Consulta criada e associada ao pet (ainda não salva).");
   }
 
   return (

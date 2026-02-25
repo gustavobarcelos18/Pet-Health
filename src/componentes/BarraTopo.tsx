@@ -1,4 +1,5 @@
 // Desenvolvido por Gustavo - PetHealth Lite - RPV 2026
+
 import { Link } from "react-router-dom";
 
 export default function BarraTopo() {

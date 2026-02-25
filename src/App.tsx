@@ -1,4 +1,5 @@
 // Desenvolvido por Gustavo - PetHealth Lite - RPV 2026
+
 import { Routes, Route } from "react-router-dom";
 import BarraTopo from "./componentes/BarraTopo";
 import PaginaHome from "./paginas/PaginaHome";
